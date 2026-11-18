@@ -1,0 +1,14 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.get_login_creds"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.refineview.wizzy",
+      "sha256_cert_fingerprints": [
+        "5F:09:65:D8:30:38:98:BA:FE:29:45:ED:FB:8F:F5:AA:59:76:30:DB:2B:3F:D4:B5:32:27:08:FC:C9:30:5B:EF"
+      ]
+    }
+  }
+]

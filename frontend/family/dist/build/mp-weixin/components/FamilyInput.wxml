@@ -1,0 +1,1 @@
+<textarea wx:if="{{a}}" class="{{b}}" value="{{c}}" disabled="{{d}}" placeholder="{{e}}" maxlength="{{f}}" bindinput="{{g}}"/><block wx:else><input wx:if="{{r0}}" class="{{h}}" type="{{i}}" password="{{j}}" value="{{k}}" disabled="{{l}}" placeholder="{{m}}" maxlength="{{n}}" bindinput="{{o}}"/></block>

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="520" height="340" viewBox="0 0 520 340" fill="none">
+  <ellipse cx="260" cy="294" rx="208" ry="18" fill="#3659CE" fill-opacity=".06"/>
+  <circle cx="262" cy="163" r="130" fill="#E9EFFC"/>
+  <circle cx="413" cy="90" r="24" fill="#FFF1C7"/>
+  <path d="M409 79v22m-11-11h22" stroke="#D6A241" stroke-width="3" stroke-linecap="round"/>
+  <path d="m81 131 6-10 6 10-6 10Z" fill="#90BAAE"/>
+  <rect x="98" y="254" width="292" height="22" rx="5" fill="#91B8AB"/>
+  <path d="M114 260h254m-254 7h254" stroke="#DBEBE5" stroke-width="2"/>
+  <path d="m111 236 277-15 2 27-277 15Z" fill="#E7B951"/>
+  <path d="m126 240 246-13 1 14-246 13Z" fill="#FFF4D8"/>
+  <path d="M110 118c54-12 104-3 150 23 46-26 96-35 150-23v115c-54-12-104-3-150 23-46-26-96-35-150-23Z" fill="#3659CE"/>
+  <path d="M117 106c52-10 99 1 143 24 44-23 91-34 143-24v117c-52-10-99 1-143 24-44-23-91-34-143-24Z" fill="#FFF" stroke="#D5DFF0" stroke-width="2"/>
+  <path d="M260 130v117" stroke="#CCD9EF" stroke-width="2"/>
+  <path d="M139 135c33-2 63 5 94 19M139 149c33-2 63 5 94 19M139 202c33-2 63 5 94 19" stroke="#D7E1F3" stroke-width="5" stroke-linecap="round"/>
+  <path d="M286 201c31-13 60-18 91-17M286 214c31-13 60-18 91-17" stroke="#D7E1F3" stroke-width="5" stroke-linecap="round"/>
+  <path d="m292 170 36-40 37 29Z" fill="#E3F1EB" stroke="#74A48D" stroke-width="2" stroke-linejoin="round"/>
+  <circle cx="180" cy="184" r="17" fill="#FFF1C7" stroke="#DBB34E" stroke-width="2"/>
+  <path d="m172 184 6 6 11-13" stroke="#A67C25" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="m251 132 8-4 8 4v48l-8-6-8 6Z" fill="#E6A49A"/>
+  <g transform="rotate(24 419 220)"><rect x="411" y="149" width="16" height="118" rx="4" fill="#E7B951"/><path d="M416 155v102m7-102v102" stroke="#F8DB88" stroke-width="2"/><path d="m411 267 8 22 8-22" fill="#E8D5B7"/><path d="m416 281 3 8 3-8" fill="#40516C"/><rect x="411" y="143" width="16" height="14" rx="4" fill="#E6A49A"/></g>
+  <g transform="rotate(-13 130 75)"><rect x="102" y="47" width="58" height="49" rx="12" fill="#FFF" stroke="#D5DFF0" stroke-width="2"/><path d="m117 71 10 10 18-21" stroke="#74A48D" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></g>
+  <path d="M349 67v13m-6-6h12M67 211v12m-6-6h12" stroke="#A6B8E1" stroke-width="2" stroke-linecap="round"/>
+</svg>

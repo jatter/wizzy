@@ -1,0 +1,8 @@
+{
+  "component": true,
+  "usingComponents": {
+    "family-button": "./FamilyButton",
+    "family-input": "./FamilyInput",
+    "lesson-editor": "./LessonEditor"
+  }
+}

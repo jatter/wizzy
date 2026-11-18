@@ -1,0 +1,11 @@
+.env
+backend/.venv/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+*.pyc
+.local/
+.deploy/
+frontend/android/.gradle/
+frontend/android/local.properties
+frontend/android/**/build/

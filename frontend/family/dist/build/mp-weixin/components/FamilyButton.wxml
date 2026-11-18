@@ -1,0 +1,1 @@
+<button class="{{['family-button', a]}}" disabled="{{b}}" bindtap="{{c}}"><slot/></button>

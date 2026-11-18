@@ -1,0 +1,9 @@
+{
+  "component": true,
+  "usingComponents": {
+    "family-button": "./FamilyButton",
+    "family-input": "./FamilyInput",
+    "homework-fields": "./HomeworkFields",
+    "homework-import-panel": "./HomeworkImportPanel"
+  }
+}

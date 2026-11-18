@@ -1,0 +1,8 @@
+{
+  "component": true,
+  "usingComponents": {
+    "family-button": "./FamilyButton",
+    "homework-page-result": "./HomeworkPageResult",
+    "learning-icon": "./LearningIcon"
+  }
+}

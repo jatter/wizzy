@@ -1,0 +1,7 @@
+{
+  "name": "小知家庭", "appid": "", "versionName": "0.1.0", "versionCode": "100",
+  "transformPx": false, "vueVersion": "3",
+  "h5": { "router": { "mode": "hash" } },
+  "mp-weixin": { "appid": "", "setting": { "urlCheck": true }, "usingComponents": true },
+  "uniStatistics": { "enable": false }
+}

@@ -1,0 +1,97 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e7]:
+  - generic [ref=e8]:
+    - generic [ref=e9]:
+      - generic [ref=e11]: 知
+      - generic [ref=e12]:
+        - generic [ref=e13]: 小知
+        - generic [ref=e14]: 把每一次练习，变成一点进步
+    - generic [ref=e15]:
+      - button "家长中心" [ref=e16] [cursor=pointer]
+      - button "快捷登录" [ref=e17] [cursor=pointer]
+      - button "退出登录" [ref=e18] [cursor=pointer]
+  - generic [ref=e19]:
+    - generic [ref=e20]:
+      - generic [ref=e21]:
+        - generic [ref=e23]: 小
+        - generic [ref=e24]: 小禾
+        - generic [ref=e25]: 5 年级 · 我的学习空间
+      - navigation "学习导航" [ref=e26]:
+        - button "拍作业" [ref=e27] [cursor=pointer]:
+          - img [ref=e30]
+          - generic [ref=e31]: 拍作业
+        - button "每日作业" [ref=e32] [cursor=pointer]:
+          - img [ref=e35]
+          - generic [ref=e36]: 每日作业
+        - button "学习页" [ref=e37] [cursor=pointer]:
+          - img [ref=e40]
+          - generic [ref=e41]: 学习页
+        - button "作业记录" [ref=e42] [cursor=pointer]:
+          - img [ref=e45]
+          - generic [ref=e46]: 作业记录
+        - button "错题回看" [ref=e47] [cursor=pointer]:
+          - img [ref=e50]
+          - generic [ref=e51]: 错题回看
+        - button "复习清单" [ref=e52] [cursor=pointer]:
+          - img [ref=e55]
+          - generic [ref=e56]: 复习清单
+        - button "学习课表" [ref=e57] [cursor=pointer]:
+          - img [ref=e60]
+          - generic [ref=e61]: 学习课表
+      - generic [ref=e62]:
+        - generic [ref=e63]: 每个孩子都有自己的节奏。
+        - generic [ref=e64]: 一起把练习变成成长。
+    - generic [ref=e66]:
+      - generic [ref=e67]:
+        - generic [ref=e68]:
+          - button "返回作业记录" [ref=e69] [cursor=pointer]
+          - generic [ref=e70]: 处理完成
+        - generic [ref=e71]:
+          - generic [ref=e72]: 2026/11/14 09:00:00 · 3 张作业
+          - generic [ref=e73]: 原图与本张批改结果逐一对照。
+        - tablist "作业图片" [ref=e74]:
+          - tab "第 1 张" [selected] [ref=e75] [cursor=pointer]
+          - tab "第 2 张" [ref=e76] [cursor=pointer]
+          - tab "第 3 张" [ref=e77] [cursor=pointer]
+        - generic "第1张作业详情" [ref=e78]:
+          - generic [ref=e79]:
+            - generic [ref=e80]:
+              - generic [ref=e81]: 第 1 张 · 原图
+              - generic [ref=e82]: 数学
+            - img [ref=e85]
+          - generic [ref=e86]:
+            - generic [ref=e87]: 批改结果
+            - tablist "本张批改结果" [ref=e88]:
+              - tab "错题(1)" [selected] [ref=e89] [cursor=pointer]
+              - tab "对题(0)" [ref=e90] [cursor=pointer]
+              - tab "全部" [ref=e91] [cursor=pointer]
+            - generic [ref=e92]:
+              - img [ref=e95]
+              - generic [ref=e96]: 这 1 题先看一看，弄懂了就赚到啦
+            - generic [ref=e97]: 还有 1 题未作答、1 题待核对，在「全部」里对着原图看。
+            - generic [ref=e98]:
+              - generic [ref=e99]:
+                - generic [ref=e100]:
+                  - img [ref=e103]
+                  - generic [ref=e104]: 第1题
+                - generic [ref=e105]: 错误
+              - generic [ref=e106]: 差一点点，我们再看一眼
+              - generic [ref=e107]: 原作答
+              - generic [ref=e108]: "41"
+              - generic [ref=e109]: 解题思路
+              - generic [ref=e110]: 先确定两个加数
+              - generic [ref=e111]: 解题过程
+              - generic [ref=e112]: 1. 40 + 2 = 42
+              - generic [ref=e113]: 正确答案
+              - generic [ref=e114]: "42"
+        - generic [ref=e115]:
+          - button "刷新处理状态" [ref=e116] [cursor=pointer]
+          - button "查看批改记录" [ref=e117] [cursor=pointer]
+      - status [ref=e118]:
+        - generic [ref=e119]: 作业已提交，正在自动识别学科并批改。
+  - generic [ref=e120]:
+    - generic [ref=e121]: 小知 · 家庭学习空间
+    - generic [ref=e122]: 学习记录仅向有权访问的家庭成员开放
+```

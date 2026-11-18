@@ -1,0 +1,38 @@
+{
+  "name": "wizzy-family",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "uni --host 127.0.0.1 --port 4176 --strictPort",
+    "build:h5": "uni build",
+    "build:mp-weixin": "uni build -p mp-weixin",
+    "type-check": "vue-tsc --noEmit",
+    "test": "node --test tests/api.test.mjs tests/homework.test.mjs tests/reports.test.mjs tests/timetable.test.mjs tests/daily-homework.test.mjs",
+    "test:browser": "playwright test"
+  },
+  "dependencies": {
+    "@dcloudio/uni-app": "3.0.0-5020620260917001",
+    "@dcloudio/uni-components": "3.0.0-5020620260917001",
+    "@dcloudio/uni-h5": "3.0.0-5020620260917001",
+    "@dcloudio/uni-mp-weixin": "3.0.0-5020620260917001",
+    "@simplewebauthn/browser": "^13.3.0",
+    "qrcode-generator": "^2.0.4",
+    "vue": "3.4.21",
+    "vue-i18n": "9.14.5"
+  },
+  "devDependencies": {
+    "@dcloudio/types": "3.4.31",
+    "@dcloudio/uni-cli-shared": "3.0.0-5020620260917001",
+    "@dcloudio/vite-plugin-uni": "3.0.0-5020620260917001",
+    "@playwright/test": "1.56.1",
+    "typescript": "5.9.3",
+    "vite": "5.4.21",
+    "vue-tsc": "3.1.1"
+  },
+  "overrides": {
+    "@dcloudio/vite-plugin-uni": {
+      "vite": "$vite"
+    }
+  }
+}

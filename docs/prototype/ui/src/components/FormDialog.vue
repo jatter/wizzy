@@ -1,0 +1,9 @@
+<script setup>
+import { reactive, watch, ref } from 'vue';
+const props=defineProps({modelValue:Boolean,title:String,fields:Array,initial:Object,note:String,confirm:{default:'保存'}});
+const emit=defineEmits(['update:modelValue','save']);
+const data=reactive({}),form=ref();
+watch(()=>props.modelValue,v=>{if(v){Object.keys(data).forEach(k=>delete data[k]);props.fields.forEach(f=>data[f.key]=props.initial?.[f.key]??f.default??(f.type==='checks'?[]:''));form.value?.clearValidate();}});
+async function save(){if(await form.value.validate().catch(()=>false))emit('save',{...data});}
+</script>
+<template><el-dialog :model-value="modelValue" :title="title" width="560px" :close-on-click-modal="false" @update:model-value="emit('update:modelValue',$event)"><el-alert v-if="note" :title="note" type="info" :closable="false" show-icon /><el-form ref="form" :model="data" label-position="top" @submit.prevent="save"><el-form-item v-for="f in fields" :key="f.key" :label="f.label" :prop="f.key" :rules="f.required?[{required:true,message:`请填写${f.label}`,trigger:'blur'},...(f.email?[{type:'email',message:'请输入有效邮箱',trigger:'blur'}]:[])]:[]"><el-select v-if="f.type==='select'" v-model="data[f.key]" :placeholder="`请选择${f.label}`"><el-option v-for="o in f.options" :key="o" :label="o" :value="o" /></el-select><el-checkbox-group v-else-if="f.type==='checks'" v-model="data[f.key]"><el-checkbox v-for="o in f.options" :key="o" :label="o" :value="o" /></el-checkbox-group><el-input v-else v-model="data[f.key]" :type="f.type==='textarea'?'textarea':'text'" :rows="3" :placeholder="f.placeholder||`请输入${f.label}`" :maxlength="f.max||120" show-word-limit /></el-form-item></el-form><template #footer><el-button @click="emit('update:modelValue',false)">取消</el-button><el-button type="primary" @click="save">{{confirm}}</el-button></template></el-dialog></template>

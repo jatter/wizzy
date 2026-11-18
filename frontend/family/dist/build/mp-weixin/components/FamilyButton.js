@@ -1,0 +1,1 @@
+"use strict";const e=require("../common/vendor.js"),t=e.defineComponent({inheritAttrs:!1,__name:"FamilyButton",props:{disabled:{type:Boolean}},emits:["click"],setup(t,{emit:n}){const o=n;return(t,n)=>({a:e.n(t.$attrs.class),b:t.disabled,c:e.o(e=>o("click",e),"43")})}});wx.createComponent(t);

@@ -1,0 +1,1 @@
+"use strict";const e=require("../common/vendor.js"),n=e.defineComponent({__name:"AppDownload",setup:n=>(e.ref(!1),e.ref(!1),e.ref(""),e.ref(null),e.ref(""),e.onUnmounted(()=>{}),(e,n)=>({}))}),o=e._export_sfc(n,[["__scopeId","data-v-95ef7ed0"]]);wx.createComponent(o);

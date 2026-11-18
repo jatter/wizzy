@@ -1,0 +1,9 @@
+{
+  "component": true,
+  "usingComponents": {
+    "family-button": "./FamilyButton",
+    "family-input": "./FamilyInput",
+    "consent-check": "./ConsentCheck",
+    "homework-fields": "./HomeworkFields"
+  }
+}

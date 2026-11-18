@@ -1,0 +1,20 @@
+{
+  "navigationStyle": "custom",
+  "navigationBarTitleText": "小知家庭",
+  "usingComponents": {
+    "homework-panel": "../../components/HomeworkPanel",
+    "daily-homework-panel": "../../components/DailyHomeworkPanel",
+    "daily-homework-summary": "../../components/DailyHomeworkSummary",
+    "mistake-bank-panel": "../../components/MistakeBankPanel",
+    "review-sheet-panel": "../../components/ReviewSheetPanel",
+    "reports-panel": "../../components/ReportsPanel",
+    "review-plan-history-panel": "../../components/ReviewPlanHistoryPanel",
+    "timetable-panel": "../../components/TimetablePanel",
+    "family-button": "../../components/FamilyButton",
+    "family-input": "../../components/FamilyInput",
+    "consent-check": "../../components/ConsentCheck",
+    "learning-icon": "../../components/LearningIcon",
+    "app-download": "../../components/AppDownload",
+    "learning-login-settings": "../../components/LearningLoginSettings"
+  }
+}
