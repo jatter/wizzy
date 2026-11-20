@@ -50,7 +50,10 @@ def provider(app, admin_engine, platform):
             finish = finish_reasons[min(len(calls) - 1, 1)]
             chat_id = f'chat-{len(calls)}'
             usage = {'prompt_tokens': 12, 'completion_tokens': 8, 'note': 'test-provider-secret'}
-            if transport['mode'] == 'sse':
+            if 'raw' in transport:
+                raw = transport['raw']
+                content_type = 'text/event-stream'
+            elif transport['mode'] == 'sse':
                 cut = max(1, len(reply) // 2)
                 events = [
                     {'id': chat_id, 'choices': [{'delta': {'content': reply[:cut], 'reasoning_content': 'secret-thought'}, 'finish_reason': None}]},
@@ -279,6 +282,61 @@ def test_length_limited_response_is_saved_but_not_shown_as_complete(client, app,
     with admin_engine.connect() as db:
         response = db.execute(text('SELECT response FROM homework_model_outputs WHERE submission_id=:id'), {'id': receipt['submission_id']}).scalar_one()
         assert response['choices'][0]['finish_reason'] == 'length'
+
+
+@pytest.mark.parametrize('raw,diagnostic', [
+    (b'data: {"choices":[{"delta":{"content":"partial"}}]}\n\ndata: {broken test-provider-secret\n\n', 'JSONDecodeError'),
+    (b'data: {"error":{"message":"test-provider-secret upstream failure"}}\n\n', 'ValueError'),
+    (b'{"error":{"message":"test-provider-secret upstream failure"}}', 'KeyError'),
+])
+def test_malformed_provider_response_is_saved_privately_without_false_results(
+        client, app, owner, student, provider, worker, admin_engine, raw, diagnostic):
+    provider['transport']['raw'] = raw
+    headers = owner['headers']
+    receipt = submit(client, headers, payload(student['id'], [upload(client, headers, student['id'])])).json()['data']
+    assert process_next(worker, app.state.settings)
+    result = client.get(f"/api/v1/submissions/{receipt['submission_id']}/model-outputs", headers=headers)
+    item, = result.json()['data']['items']
+    assert item['status'] == 'failed' and item['page_results'] == [] and item['content'] == ''
+    assert '重新批改' in item['error_message']
+    assert len(provider['calls']) == 1
+    with admin_engine.connect() as db:
+        response = db.execute(text('SELECT response FROM homework_model_outputs WHERE submission_id=:id'),
+                              {'id': receipt['submission_id']}).scalar_one()
+    assert response['raw_response'] == raw.decode().replace('test-provider-secret', '****')
+    assert response['parse_error'] == diagnostic
+    assert 'test-provider-secret' not in json.dumps(response)
+    assert 'raw_response' not in result.text and 'upstream failure' not in result.text
+
+
+def test_dictation_results_preserve_words_without_counting_spelling_as_mastery(client, app, owner, student, provider, worker, monkeypatch):
+    question = {'number': '左列第1项', 'item_type': 'word', 'grading_basis': 'spelling_only',
+                'verdict': 'incorrect', 'student_answer': 'applle', 'reasoning': '多写了一个l，仅检查拼写',
+                'steps': [], 'answer': 'apple'}
+    questions = [question,
+                 {**question, 'number': '右列第1项', 'verdict': 'correct', 'student_answer': 'weather', 'answer': 'weather'},
+                 {**question, 'number': '右列第2项', 'grading_basis': 'none', 'verdict': 'unclear', 'student_answer': 'w?rd', 'answer': ''}]
+
+    def fake_invoke(*_args):
+        content = json.dumps({'pages': [{'position': 1, 'subject': 'english', 'note': '仅检查拼写', 'questions': questions}]})
+        return content, {'choices': [{'message': {'content': content}, 'finish_reason': 'stop'}]}
+
+    monkeypatch.setattr('wizzy.homework_grading.invoke', fake_invoke)
+    headers = owner['headers']
+    saved = submit(client, headers, payload(student['id'], [upload(client, headers, student['id'])])).json()['data']
+    assert process_next(worker, app.state.settings)
+    outputs = client.get(f"/api/v1/submissions/{saved['submission_id']}/model-outputs", headers=headers).json()['data']['items']
+    assert all(item['status'] == 'succeeded' for item in outputs)
+    page = outputs[-1]['page_results'][0]
+    assert page['counts'] == {'correct': 1, 'incorrect': 1, 'unanswered': 0, 'unclear': 1}
+    assert page['questions'][0]['student_answer'] == 'applle'
+    assert page['questions'][1]['grading_basis'] == 'spelling_only'
+    questions[:] = [{**question, 'verdict': 'correct', 'student_answer': 'apple'}]
+    submit(client, headers, payload(student['id'], [upload(client, headers, student['id'])]))
+    assert process_next(worker, app.state.settings)
+    bank = client.get(f"/api/v1/students/{student['id']}/mistake-bank", headers=headers).json()['data']['items']
+    assert len(bank) == 1
+    assert bank[0]['incorrect_count'] == 1 and bank[0]['correct_count'] == 0
 
 
 def test_mistake_bank_counts_repeats_and_prints_separate_sheets(client, app, owner, student, provider, worker, admin_engine, monkeypatch):

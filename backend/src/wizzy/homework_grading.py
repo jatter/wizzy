@@ -87,6 +87,10 @@ def completion_body(raw, api_key):
 class GradingFailure(Exception):
     """Only a safe, user-visible message; vendor errors never escape the boundary."""
 
+    def __init__(self, message, *, response=None):
+        super().__init__(message)
+        self.response = response
+
 
 def invoke(model, prompt, images, subject, api_key, activity_type='auto', reference_text=''):
     context = json.dumps({'activity_type': activity_type, 'reference_text': reference_text}, ensure_ascii=False)
@@ -104,6 +108,7 @@ def invoke(model, prompt, images, subject, api_key, activity_type='auto', refere
     if api_key:
         headers['Authorization'] = 'Bearer ' + api_key
     request = urllib.request.Request(endpoint(model['base_url']), data=json.dumps(payload).encode(), headers=headers, method='POST')
+    raw = b''
     try:
         with urllib.request.build_opener(NoRedirect).open(request, timeout=CALL_TIMEOUT) as response:
             raw = response.read(4 * 1024 * 1024 + 1)
@@ -119,8 +124,14 @@ def invoke(model, prompt, images, subject, api_key, activity_type='auto', refere
         raise GradingFailure(f'模型调用失败（HTTP {error.code}），请联系管理员检查模型配置。') from None
     except (urllib.error.URLError, OSError):
         raise GradingFailure('模型连接中断或超时，请稍后重新提交。') from None
-    except (ValueError, KeyError, IndexError, TypeError):
-        raise GradingFailure('模型返回格式不完整，请联系管理员检查模型。') from None
+    except (ValueError, KeyError, IndexError, TypeError) as error:
+        # Keep malformed transport responses in the private result, just like invalid answers.
+        # The public projection excludes response; neither provider text nor secrets reach it.
+        cleaned = raw.decode('utf-8', errors='replace')
+        if api_key:
+            cleaned = cleaned.replace(api_key, '****')
+        raise GradingFailure('模型接口返回的数据不完整，本次批改未完成，请点击“重新批改”重试。',
+                             response={'raw_response': cleaned, 'parse_error': type(error).__name__}) from None
 
 
 def execute(engine, function, **params):
@@ -194,6 +205,7 @@ def process_next(engine, settings):
                         error = f'{reasons[validation_error]}（{validation_error}），原始内容已保存，请联系管理员核对。'
                 except GradingFailure as failure:
                     error = str(failure)
+                    response = failure.response
                 saved = execute(engine, 'finish_homework_call(:id,:token,:sequence,:content,CAST(:response AS jsonb),:error)',
                                 **identifiers, sequence=sequence, content=content,
                                 response=json.dumps(response, ensure_ascii=False), error=error)

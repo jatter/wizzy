@@ -2,6 +2,7 @@
   "component": true,
   "usingComponents": {
     "family-button": "./FamilyButton",
+    "family-input": "./FamilyInput",
     "homework-page-result": "./HomeworkPageResult",
     "learning-icon": "./LearningIcon"
   }

@@ -1,4 +1,5 @@
 import { test, expect, type Page } from '@playwright/test';
+import type { HomeworkPageResult } from '../src/api';
 
 const png = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aP1sAAAAASUVORK5CYII=', 'base64');
 const record = (id: string, created_at: string) => ({ id, student_id: 's1', subject: 'auto', status: 'completed', source_revision: 1, created_at, page_count: 3 });
@@ -85,9 +86,9 @@ test('history uses date tabs and each image shows its own original, counts and f
   await expect(page.locator('.solution-step')).toContainText('40 + 2 = 42');
   await expect(page.locator('.final-answer')).toHaveText('42');
   await page.getByRole('tab', { name: '对题(0)', exact: true }).click();
-  await expect(page.locator('.answers-column')).toContainText('这张还没有做对的题');
+  await expect(page.locator('.answers-column')).toContainText('这一栏暂时没有可展开的题目');
   await expect(page.locator('.solution-step')).toHaveCount(0);
-  await page.getByRole('button', { name: '先看错题，一题一题来', exact: true }).click();
+  await page.getByRole('tab', { name: '错题(1)', exact: true }).click();
   await expect(page.locator('.solution-step')).toContainText('40 + 2 = 42');
   await page.getByRole('tab', { name: '全部', exact: true }).click();
   await expect(page.locator('.final-answer')).toHaveText('42');
@@ -149,19 +150,20 @@ test('dictation accepts optional reference and sends the selected mode', async (
   await page.getByLabel('参考词表（可选）', { exact: true }).fill('第1张：\n1. whether\n2. take care of');
   await page.getByLabel('选择作业图片', { exact: true }).setInputFiles({ name: 'words.png', mimeType: 'image/png', buffer: png });
   await page.getByRole('button', { name: '提交已完成的作业', exact: true }).click();
+  await expect(page.locator('.homework-detail')).toBeVisible();
   expect(submitted[0]).toMatchObject({ activity_type: 'dictation', reference_text: '第1张：\n1. whether\n2. take care of' });
 });
 
-async function wordResults(page: Page, questions: unknown[]) {
+async function wordResults(page: Page, questions: HomeworkPageResult['questions']) {
   await page.route('**/api/v1/submissions/*/model-outputs', route => route.fulfill({ json: { data: { items: [{
     id: 'words', sequence: 2, status: 'succeeded', content: '', error_message: null,
     page_results: [{ position: 1, subject: 'english', note: '', questions,
-      counts: { correct: questions.length === 1 ? 0 : 1, incorrect: 0, unanswered: 0, unclear: 1 } }],
+      counts: Object.fromEntries(['correct', 'incorrect', 'unanswered', 'unclear'].map(verdict => [verdict, questions.filter(question => question.verdict === verdict).length])) }],
   }] } } }));
   await nav(page, '作业记录').click();
   await page.getByRole('button', { name: '查看详情', exact: true }).first().click();
 }
-const word = { number: '左列第3项', item_type: 'word', grading_basis: 'none', verdict: 'unclear', student_answer: 'w?rd', reasoning: '字迹不清，请核对', steps: [], answer: '' };
+const word: HomeworkPageResult['questions'][number] = { number: '左列第3项', item_type: 'word', grading_basis: 'none', verdict: 'unclear', student_answer: 'w?rd', reasoning: '字迹不清，请核对', steps: [], answer: '' };
 
 test('unclear word results open all items without claiming a perfect score', async ({ page }) => {
   await session(page);
@@ -183,4 +185,24 @@ test('spelling-only success is explicitly scoped even in mixed results', async (
   await expect(page.locator('.answer-question .badge')).toHaveText('拼写未见错误');
   await expect(page.locator('.answers-column')).not.toContainText('做对了');
   await expect(page.locator('.cheer')).toHaveCount(0);
+});
+
+test('word and phrase errors retain column positions, original spelling and correction', async ({ page }) => {
+  await session(page);
+  await wordResults(page, [
+    { ...word, number: '左列第3项', grading_basis: 'spelling_only', verdict: 'incorrect', student_answer: 'applle', reasoning: '多写一个l', steps: ['去掉多余的l'], answer: 'apple' },
+    { ...word, number: '右列第2项', item_type: 'phrase', grading_basis: 'task_reference', verdict: 'incorrect', student_answer: 'take care', reasoning: '参考要求完整短语', steps: [], answer: 'take care of' },
+  ]);
+  await expect(page.getByRole('tab', { name: '错题(2)', exact: true })).toHaveAttribute('aria-selected', 'true');
+  await expect(page.locator('.answer-question')).toHaveCount(2);
+  await expect(page.locator('.answer-question').first()).toContainText('左列第3项');
+  await expect(page.locator('.answer-question').first()).toContainText('applle');
+  await expect(page.locator('.answer-question').first()).toContainText('检查依据');
+  await expect(page.locator('.answer-question').first()).toContainText('订正建议');
+  await expect(page.locator('.final-answer')).toHaveText(['apple', 'take care of']);
+  for (const width of [320, 390, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  }
+  await page.screenshot({ path: test.info().outputPath('dictation-result.png'), fullPage: true });
 });

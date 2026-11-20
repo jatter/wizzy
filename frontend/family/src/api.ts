@@ -24,7 +24,7 @@ export interface SubmissionFilters {
   date_from?: string; date_to?: string; subject?: HomeworkSubject;
   status?: 'queued' | 'processing' | 'completed' | 'partial' | 'failed' | 'cancelled';
 }
-export interface SubmissionDetail extends Submission { job_id: string; pages: { position: number; media_id: string }[] }
+export interface SubmissionDetail extends Submission { activity_type?: HomeworkActivity; reference_text?: string; job_id: string; pages: { position: number; media_id: string }[] }
 export interface Job { id: string; submission_id: string; status: string; error_code: string | null; created_at: string; finished_at: string | null }
 export interface Quota { page_limit: number; reserved_pages: number; used_pages: number; remaining_pages: number; period_start: string }
 export interface ModelOutput {

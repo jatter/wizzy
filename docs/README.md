@@ -37,6 +37,7 @@
 | [13 前端 UI 框架与设计方案](research/13-frontend-ui-framework-and-design-system.md) | GitHub 对比、组件选型、设计规范与落地边界 | 产品、前端、QA |
 | [14 正式工程实现与验证台账](plans/14-development-status.md) | 已实现切片、测试证据、未完成项及下一步 | 全员 |
 | [群作业截图与每日清单方案](plans/2026-11-15-daily-homework-checklist.md) | 图片识别、日期核对、完成记录及后续消息/作业匹配接口 | 产品、研发、QA |
+| [听说与预习解决方案](听说及预习解决方案.md) | 单词/课文听写（TTS+判分）、朗读语音评测、课程预习提醒与检查 | 产品、研发、QA |
 | [本地开发与数据库初始化](local-development.md) | PG/Redis、独立受限账号、迁移、API/dispatcher 启动及测试边界 | 研发、QA |
 | [小知三端功能列表](小知功能列表.md) | 逐需求拆分、19 个页面交互与缺口映射 | 全员 |
 | [可交互原型](prototype/README.md) | 三端预览、源码、构建与验证方式 | 全员 |
